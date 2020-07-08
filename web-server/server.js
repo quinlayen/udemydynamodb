@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const bodyparser = require('body-parser');
+const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
 
@@ -17,3 +17,4 @@ app.post('/sup', (req, res)=>{
 app.listen(3000, ()=>{
     console.log("listening on 3000")
 })
+ 
