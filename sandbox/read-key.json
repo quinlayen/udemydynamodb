@@ -1,0 +1,4 @@
+{
+  "user_id": { "S": "ABC" },
+  "timestamp": { "N": "1" }
+}
