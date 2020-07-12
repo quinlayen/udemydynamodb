@@ -9,7 +9,7 @@ AWS.config.update({region: 'us-west-2'});
 
 docClient = new AWS.DynamoDB.DocumentClient();
 
-const TableName = 'td_notes_test'
+const TableName = 'td_notes'
 let user_id = 'test_user_2';
 let user_name = 'Test User 2';
 
@@ -101,5 +101,33 @@ router.get('/api/notes', (req, res, next)=>{
         }
     });
 });
+
+router.get('/api/note/:note_id', (req, res, next )=>{
+    let note_id = req.params.note_id;
+    let params = {
+        TableName,
+        IndexName: 'note_id-index',
+        KeyConditionExpression: "note_id = :note_id",
+        ExpressionAttributeValues: {
+            ":note_id": note_id        
+        },
+        Limit: 1
+    };
+    docClient.query(params, (err,data)=>{
+        if(err){
+            console.log(err);
+            return res.status(err.statusCode).send({
+                message: err.message,
+                status: err.statusCode
+            });
+        }else{
+            if(!_.isEmpty(data.Items)){
+                return res.status(200).send(data.Items[0]);
+            }else{
+                return res.status(404).send();
+            }
+        }
+    })
+})
 
 module.exports = router;
